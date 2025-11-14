@@ -1,8 +1,7 @@
 from django.urls import path
-
-from . import views
+from .views import HealthCheckView, VersionView
 
 urlpatterns = [
-    path("ping", views.health_check, name="health"),
-    path("version", views.version_view, name="version"),
+    path("ping", HealthCheckView.as_view(), name="health"),
+    path("version", VersionView.as_view(), name="version"),
 ]
