@@ -8,7 +8,7 @@ from .serializers import *
 class HealthCheckView(APIView):
     @extend_schema(
         summary="health check",
-        description="Check the API is alive or not",
+        description="Check the API is alive or not.",
         responses={"200": PingSerializer},
         tags=["core"],
     )

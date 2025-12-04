@@ -1,4 +1,8 @@
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+
+load_dotenv(dotenv_path=".env")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -13,10 +17,34 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "core",
     "rest_framework",
     "drf_spectacular",
+    "requests",
+    "core",
+    "media",
 ]
+
+# DEV MODE For see debug log on the terminal
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+        },
+        "django": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
+        },
+    },
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -49,8 +77,12 @@ WSGI_APPLICATION = "MediaProject.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("PSQL_USER"),
+        "USER": os.getenv("PSQL_PASSWORD"),
+        "PASSWORD": os.getenv("PSQL_DB"),
+        "HOST": "db",
+        "PORT": "5432",
     }
 }
 
@@ -88,6 +120,7 @@ REST_FRAMEWORK = {
 
 SPECTACULAR_SETTINGS = {
     "TITLE": "MediaProject API",
-    "DESCRIPTION": "Documentation de l’API MediaProject",
+    "DESCRIPTION": "Documentation MediaProject API",
     "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": "FALSE",
 }
