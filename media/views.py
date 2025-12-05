@@ -8,7 +8,7 @@ import base64
 from dotenv import load_dotenv
 import os
 
-load_dotenv(dotenv_path="../.env.media")
+load_dotenv()
 
 
 class UploadMedia(APIView):
@@ -30,16 +30,15 @@ class UploadMedia(APIView):
     )
     def post(self, request):
         file = request.FILES.get("file")
-        fileName = request.data.get("file_name")
+        fileName = request.data.get("fileName")
         url = os.getenv("URL_UPLOAD")
         private_key = os.getenv("PRIVATE_KEY")
         auth_header = base64.b64encode(f"{private_key}:".encode()).decode()
 
-        files = {"file": (file.content_type)}
+        files = {"file": (file)}
 
-        data = {
-            "fileName": fileName,
-        }
+        data = {"fileName": fileName}
+
         headers = {
             "Authorization": f"Basic {auth_header}",
             "Accept": "application/json",
